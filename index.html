@@ -1,209 +1,1139 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Bloom & Bouquet</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #fff4f8;
-            text-align: center;
-            margin: 0;
-            padding: 20px;
-        }
+<title>Bloom & Bouquet</title>
 
-        h1 {
-            color: #c85a8e;
-        }
+<style>
 
-        .game {
-            max-width: 700px;
-            margin: auto;
-            background: white;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
+body {
+    font-family: Arial, sans-serif;
+    background: #fff4f8;
+    margin: 0;
+    padding: 20px;
+    color: #4b3541;
+}
 
-        .customer {
-            background: #fff0f5;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
+h1 {
+    color: #c85a8e;
+    text-align: center;
+}
 
-        .flowers, .wrapping {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 15px;
-        }
+h2 {
+    color: #b85a83;
+}
 
-        button {
-            padding: 12px 18px;
-            border: none;
-            border-radius: 12px;
-            background: #e89abb;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-        }
+.game {
+    max-width: 900px;
+    margin: auto;
+}
 
-        button:hover {
-            background: #d779a0;
-        }
+.top-bar {
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
 
-        .selected {
-            background: #9b6bb3;
-        }
+.panel {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
 
-        #bouquet {
-            min-height: 50px;
-            margin: 20px;
-            padding: 15px;
-            background: #faf0f5;
-            border-radius: 15px;
-        }
+.customer {
+    background: #fff0f5;
+    padding: 20px;
+    border-radius: 15px;
+}
 
-        #result {
-            font-size: 20px;
-            margin: 20px;
-        }
-    </style>
+.request {
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 12px;
+    background: #e89abb;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #d779a0;
+}
+
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.flower-button {
+    background: #d88bb0;
+}
+
+.wrap-button {
+    background: #9b7bb5;
+}
+
+.shop-button {
+    background: #77a878;
+}
+
+.selected {
+    outline: 4px solid #8d5b91;
+}
+
+.inventory {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+}
+
+.inventory-item {
+    background: #faf0f5;
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.shop-item {
+    background: #f5f0ff;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#bouquet {
+    background: #faf0f5;
+    padding: 15px;
+    border-radius: 15px;
+    min-height: 80px;
+}
+
+#result {
+    font-size: 20px;
+    text-align: center;
+    padding: 15px;
+}
+
+.hidden {
+    display: none;
+}
+
+</style>
 </head>
+
 
 <body>
 
 <div class="game">
 
-    <h1>🌷 Bloom & Bouquet 🌷</h1>
+<h1>🌷 Bloom & Bouquet 🌷</h1>
 
-    <p>Money: $<span id="money">20</span></p>
 
-    <div class="customer">
-        <h2>💐 A Customer Has Arrived!</h2>
+<div class="top-bar">
 
-        <p id="customerRequest">
-            Hi! I need a bouquet for my mom's birthday.
-            She loves soft, cheerful flowers.
-            Please include a daisy!
-        </p>
-    </div>
+<div>
+💰 Money: $<span id="money">15</span>
+</div>
 
-    <h2>🌸 Choose Your Flowers</h2>
-
-    <div class="flowers">
-        <button onclick="addFlower('🌼 Daisy')">🌼 Daisy</button>
-        <button onclick="addFlower('🌹 Rose')">🌹 Rose</button>
-        <button onclick="addFlower('🌻 Sunflower')">🌻 Sunflower</button>
-        <button onclick="addFlower('💜 Lavender')">💜 Lavender</button>
-        <button onclick="addFlower('🌷 Tulip')">🌷 Tulip</button>
-    </div>
-
-    <h2>🎀 Choose Wrapping</h2>
-
-    <div class="wrapping">
-        <button onclick="chooseWrapping('🤍 White')">🤍 White</button>
-        <button onclick="chooseWrapping('💗 Pink')">💗 Pink</button>
-        <button onclick="chooseWrapping('💜 Purple')">💜 Purple</button>
-    </div>
-
-    <div id="bouquet">
-        <h3>Your Bouquet</h3>
-        <p id="flowersChosen">No flowers yet!</p>
-        <p id="wrappingChosen">No wrapping yet!</p>
-    </div>
-
-    <button onclick="deliverBouquet()">💐 Give Bouquet to Customer</button>
-
-    <div id="result"></div>
+<div>
+👥 Customer: <span id="customerNumber">1</span>
+</div>
 
 </div>
 
+
+
+<!-- CUSTOMER -->
+
+<div class="panel">
+
+<h2>👤 Customer</h2>
+
+<div class="customer">
+
+<h3 id="customerName"></h3>
+
+<p class="request" id="customerRequest"></p>
+
+<p>
+<strong>They are looking for:</strong>
+</p>
+
+<ul id="requirements"></ul>
+
+</div>
+
+</div>
+
+
+
+<!-- INVENTORY -->
+
+<div class="panel">
+
+<h2>🎒 Your Flower Inventory</h2>
+
+<div class="inventory" id="inventory">
+</div>
+
+</div>
+
+
+
+<!-- BOUQUET MAKING -->
+
+<div class="panel">
+
+<h2>💐 Make Your Bouquet</h2>
+
+<p>Choose flowers from your inventory:</p>
+
+<div class="buttons" id="flowerButtons">
+</div>
+
+
+<h3>🎀 Choose Wrapping</h3>
+
+<div class="buttons">
+
+<button class="wrap-button"
+onclick="chooseWrapping('🤍 White wrapping')">
+🤍 White
+</button>
+
+<button class="wrap-button"
+onclick="chooseWrapping('💗 Pink wrapping')">
+💗 Pink
+</button>
+
+<button class="wrap-button"
+onclick="chooseWrapping('💜 Purple wrapping')">
+💜 Purple
+</button>
+
+<button class="wrap-button"
+onclick="chooseWrapping('💙 Blue wrapping')">
+💙 Blue
+</button>
+
+</div>
+
+
+<div id="bouquet">
+
+<h3>Your Bouquet</h3>
+
+<p id="flowersChosen">
+No flowers chosen yet.
+</p>
+
+<p id="wrappingChosen">
+No wrapping chosen yet.
+</p>
+
+</div>
+
+
+<button onclick="deliverBouquet()">
+💐 Give Bouquet to Customer
+</button>
+
+
+<div id="result"></div>
+
+
+<button id="nextButton"
+class="hidden"
+onclick="newCustomer()">
+➡️ Next Customer
+</button>
+
+</div>
+
+
+
+<!-- SHOP -->
+
+<div class="panel">
+
+<h2>🛍️ Flower Shop</h2>
+
+<p>
+Spend your money to buy more flowers!
+</p>
+
+<div id="shop">
+</div>
+
+</div>
+
+
+</div>
+
+
+
 <script>
 
+
+/* =========================
+   FLOWER DATA
+========================= */
+
+
+const flowers = {
+
+"Daisy": {
+emoji: "🌼",
+price: 2,
+traits: ["soft", "cheerful", "gentle"]
+},
+
+"Rose": {
+emoji: "🌹",
+price: 4,
+traits: ["romantic", "elegant", "loving"]
+},
+
+"Sunflower": {
+emoji: "🌻",
+price: 3,
+traits: ["cheerful", "happy", "warm"]
+},
+
+"Lavender": {
+emoji: "💜",
+price: 3,
+traits: ["calm", "soft", "comforting"]
+},
+
+"Tulip": {
+emoji: "🌷",
+price: 3,
+traits: ["romantic", "elegant", "cheerful"]
+},
+
+"Lily": {
+emoji: "🌺",
+price: 5,
+traits: ["elegant", "sympathy", "peaceful"]
+},
+
+"Baby's Breath": {
+emoji: "🤍",
+price: 2,
+traits: ["soft", "gentle", "peaceful"]
+}
+
+};
+
+
+
+/* =========================
+   INVENTORY
+========================= */
+
+
+let inventory = {
+
+"Daisy": 3,
+
+"Rose": 2,
+
+"Sunflower": 2,
+
+"Lavender": 2,
+
+"Tulip": 2,
+
+"Lily": 0,
+
+"Baby's Breath": 0
+
+};
+
+
+
+let money = 15;
+
 let bouquet = [];
+
 let wrapping = "";
 
-let money = 20;
+let customerNumber = 1;
+
+
+
+/* =========================
+   CUSTOMER DATA
+========================= */
+
+
+const customers = [
+
+{
+name: "Emma",
+reason: "her mom's birthday",
+description: "She wants something soft and cheerful.",
+requiredFlower: "Daisy",
+traits: ["soft", "cheerful"]
+},
+
+{
+name: "Alex",
+reason: "their partner's anniversary",
+description: "They want something romantic and elegant.",
+requiredFlower: "Rose",
+traits: ["romantic", "elegant"]
+},
+
+{
+name: "Mia",
+reason: "a friend who is feeling sick",
+description: "She wants something comforting and gentle.",
+requiredFlower: "Lavender",
+traits: ["comforting", "gentle"]
+},
+
+{
+name: "Jordan",
+reason: "a graduation celebration",
+description: "They want something bright, happy, and cheerful.",
+requiredFlower: "Sunflower",
+traits: ["happy", "cheerful"]
+},
+
+{
+name: "Sophie",
+reason: "a wedding anniversary",
+description: "She wants an elegant and romantic bouquet.",
+requiredFlower: "Tulip",
+traits: ["elegant", "romantic"]
+},
+
+{
+name: "Noah",
+reason: "a friend who lost someone",
+description: "They want something peaceful and comforting.",
+requiredFlower: "Lily",
+traits: ["peaceful", "comforting"]
+},
+
+{
+name: "Ava",
+reason: "her friend's birthday",
+description: "She wants something cheerful, soft, and sweet.",
+requiredFlower: "Daisy",
+traits: ["cheerful", "soft"]
+}
+
+];
+
+
+
+let currentCustomer;
+
+
+
+/* =========================
+   DISPLAY INVENTORY
+========================= */
+
+
+function displayInventory() {
+
+let container =
+document.getElementById("inventory");
+
+container.innerHTML = "";
+
+
+for (let flower in inventory) {
+
+let item =
+document.createElement("div");
+
+item.className =
+"inventory-item";
+
+item.innerHTML =
+
+flowers[flower].emoji +
+" " +
+flower +
+"<br>" +
+"× " +
+inventory[flower];
+
+container.appendChild(item);
+
+}
+
+}
+
+
+
+/* =========================
+   FLOWER BUTTONS
+========================= */
+
+
+function displayFlowerButtons() {
+
+let container =
+document.getElementById("flowerButtons");
+
+container.innerHTML = "";
+
+
+for (let flower in inventory) {
+
+let button =
+document.createElement("button");
+
+button.className =
+"flower-button";
+
+
+button.innerHTML =
+
+flowers[flower].emoji +
+" " +
+flower +
+" (" +
+inventory[flower] +
+")";
+
+
+button.disabled =
+inventory[flower] <= 0;
+
+
+button.onclick = function() {
+
+addFlower(flower);
+
+};
+
+
+container.appendChild(button);
+
+}
+
+}
+
+
+
+/* =========================
+   ADD FLOWER
+========================= */
+
 
 function addFlower(flower) {
 
-    bouquet.push(flower);
+if (inventory[flower] <= 0) {
 
-    document.getElementById("flowersChosen").innerText =
-        bouquet.join(" ");
+return;
 
 }
+
+
+inventory[flower]--;
+
+bouquet.push(flower);
+
+
+updateBouquet();
+
+displayInventory();
+
+displayFlowerButtons();
+
+}
+
+
+
+/* =========================
+   DISPLAY BOUQUET
+========================= */
+
+
+function updateBouquet() {
+
+let display =
+document.getElementById("flowersChosen");
+
+
+if (bouquet.length === 0) {
+
+display.innerText =
+"No flowers chosen yet.";
+
+return;
+
+}
+
+
+let text = "";
+
+
+bouquet.forEach(function(flower) {
+
+text +=
+flowers[flower].emoji +
+" " +
+flower +
+" ";
+
+});
+
+
+display.innerText = text;
+
+}
+
+
+
+/* =========================
+   WRAPPING
+========================= */
+
 
 function chooseWrapping(choice) {
 
-    wrapping = choice;
+wrapping = choice;
 
-    document.getElementById("wrappingChosen").innerText =
-        "Wrapping: " + wrapping;
+
+document.getElementById(
+"wrappingChosen"
+).innerText =
+
+"Wrapping: " +
+wrapping;
 
 }
+
+
+
+/* =========================
+   NEW CUSTOMER
+========================= */
+
+
+function newCustomer() {
+
+let randomIndex =
+Math.floor(
+Math.random() *
+customers.length
+);
+
+
+currentCustomer =
+customers[randomIndex];
+
+
+document.getElementById(
+"customerName"
+).innerText =
+
+currentCustomer.name;
+
+
+document.getElementById(
+"customerRequest"
+).innerText =
+
+"Hi! I need flowers for " +
+currentCustomer.reason +
+". " +
+currentCustomer.description;
+
+
+let requirements =
+document.getElementById(
+"requirements"
+);
+
+
+requirements.innerHTML = "";
+
+
+let reasonItem =
+document.createElement("li");
+
+
+reasonItem.innerText =
+
+"Reason: " +
+currentCustomer.reason;
+
+
+requirements.appendChild(
+reasonItem
+);
+
+
+let flowerItem =
+document.createElement("li");
+
+
+flowerItem.innerText =
+
+"Required flower: " +
+flowers[
+currentCustomer.requiredFlower
+].emoji +
+" " +
+currentCustomer.requiredFlower;
+
+
+requirements.appendChild(
+flowerItem
+);
+
+
+currentCustomer.traits.forEach(
+function(trait) {
+
+let item =
+document.createElement("li");
+
+item.innerText =
+"Style: " +
+trait;
+
+requirements.appendChild(item);
+
+});
+
+
+bouquet = [];
+
+wrapping = "";
+
+
+document.getElementById(
+"flowersChosen"
+).innerText =
+
+"No flowers chosen yet.";
+
+
+document.getElementById(
+"wrappingChosen"
+).innerText =
+
+"No wrapping chosen yet.";
+
+
+document.getElementById(
+"result"
+).innerText = "";
+
+
+document.getElementById(
+"nextButton"
+).classList.add(
+"hidden"
+);
+
+
+customerNumber++;
+
+
+document.getElementById(
+"customerNumber"
+).innerText =
+customerNumber;
+
+
+displayInventory();
+
+displayFlowerButtons();
+
+}
+
+
+
+/* =========================
+   DELIVER BOUQUET
+========================= */
+
 
 function deliverBouquet() {
 
-    if (bouquet.length === 0) {
 
-        document.getElementById("result").innerText =
-            "🌱 You need to add some flowers first!";
+if (bouquet.length === 0) {
 
-        return;
+document.getElementById(
+"result"
+).innerText =
 
-    }
+"🌱 You need to choose some flowers!";
 
-    let score = 0;
+return;
 
-    // Daisy requirement
-    if (bouquet.includes("🌼 Daisy")) {
-        score += 40;
-    }
-
-    // Soft flowers
-    if (
-        bouquet.includes("🌼 Daisy") ||
-        bouquet.includes("💜 Lavender")
-    ) {
-        score += 20;
-    }
-
-    // Cheerful flowers
-    if (
-        bouquet.includes("🌻 Sunflower") ||
-        bouquet.includes("🌼 Daisy")
-    ) {
-        score += 20;
-    }
-
-    // Wrapping bonus
-    if (wrapping !== "") {
-        score += 20;
-    }
-
-    money += Math.floor(score / 5);
-
-    document.getElementById("money").innerText = money;
-
-    document.getElementById("result").innerText =
-        "⭐ Customer Satisfaction: " + score +
-        "%! You earned $" + Math.floor(score / 5) + "!";
-
-    bouquet = [];
-    wrapping = "";
-
-    document.getElementById("flowersChosen").innerText =
-        "No flowers yet!";
-
-    document.getElementById("wrappingChosen").innerText =
-        "No wrapping yet!";
 }
+
+
+let score = 0;
+
+
+/* Required flower */
+
+
+if (
+bouquet.includes(
+currentCustomer.requiredFlower
+)
+) {
+
+score += 40;
+
+}
+
+
+
+/* Check traits */
+
+
+let traitsMatched = 0;
+
+
+currentCustomer.traits.forEach(
+function(trait) {
+
+
+let matched = false;
+
+
+bouquet.forEach(
+function(flower) {
+
+
+if (
+flowers[flower].traits
+.includes(trait)
+) {
+
+matched = true;
+
+}
+
+});
+
+
+if (matched) {
+
+traitsMatched++;
+
+score += 15;
+
+}
+
+});
+
+
+
+/* Wrapping bonus */
+
+
+if (wrapping !== "") {
+
+score += 10;
+
+}
+
+
+
+/* Maximum score */
+
+
+if (score > 100) {
+
+score = 100;
+
+}
+
+
+
+/* Money earned */
+
+
+let earnings =
+Math.max(
+2,
+Math.floor(
+score / 5
+)
+);
+
+
+money += earnings;
+
+
+
+/* Result */
+
+
+let message = "";
+
+
+if (score >= 90) {
+
+message =
+"🌟 PERFECT! The customer absolutely loved it!";
+
+}
+
+else if (score >= 70) {
+
+message =
+"😊 Great job! The customer is very happy!";
+
+}
+
+else if (score >= 50) {
+
+message =
+"🙂 The customer liked the bouquet.";
+
+}
+
+else {
+
+message =
+"😅 The bouquet wasn't quite what they wanted.";
+
+}
+
+
+
+document.getElementById(
+"result"
+).innerText =
+
+message +
+"\n⭐ Satisfaction: " +
+score +
+"%\n💰 You earned $" +
+earnings;
+
+
+
+document.getElementById(
+"money"
+).innerText =
+money;
+
+
+
+document.getElementById(
+"nextButton"
+).classList.remove(
+"hidden"
+);
+
+
+
+/* Prevent using bouquet again */
+
+
+bouquet = [];
+
+wrapping = "";
+
+
+
+document.getElementById(
+"flowersChosen"
+).innerText =
+
+"Bouquet delivered!";
+
+
+document.getElementById(
+"wrappingChosen"
+).innerText =
+
+"";
+
+}
+
+
+
+/* =========================
+   SHOP
+========================= */
+
+
+function displayShop() {
+
+
+let shop =
+document.getElementById(
+"shop"
+);
+
+
+shop.innerHTML = "";
+
+
+for (let flower in flowers) {
+
+
+let item =
+document.createElement("div");
+
+
+item.className =
+"shop-item";
+
+
+let info =
+document.createElement("span");
+
+
+info.innerHTML =
+
+flowers[flower].emoji +
+" <strong>" +
+flower +
+"</strong>" +
+
+"<br>Price: $" +
+flowers[flower].price;
+
+
+
+let button =
+document.createElement("button");
+
+
+button.className =
+"shop-button";
+
+
+button.innerText =
+"Buy 1";
+
+
+button.onclick = function() {
+
+buyFlower(flower);
+
+};
+
+
+
+item.appendChild(info);
+
+item.appendChild(button);
+
+
+shop.appendChild(item);
+
+}
+
+}
+
+
+
+/* =========================
+   BUY FLOWER
+========================= */
+
+
+function buyFlower(flower) {
+
+
+let price =
+flowers[flower].price;
+
+
+if (money < price) {
+
+
+document.getElementById(
+"result"
+).innerText =
+
+"💸 You don't have enough money!";
+
+
+return;
+
+}
+
+
+money -= price;
+
+
+inventory[flower]++;
+
+
+document.getElementById(
+"money"
+).innerText =
+money;
+
+
+displayInventory();
+
+displayFlowerButtons();
+
+
+document.getElementById(
+"result"
+).innerText =
+
+"🌷 You bought a " +
+flower +
+"!";
+
+}
+
+
+
+/* =========================
+   START GAME
+========================= */
+
+
+displayShop();
+
+displayInventory();
+
+displayFlowerButtons();
+
+newCustomer();
+
 
 </script>
 
 </body>
+
 </html>
