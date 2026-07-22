@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bloom & Bouquet</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff4f8;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #c85a8e;
+        }
+
+        .game {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .customer {
+            background: #fff0f5;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .flowers, .wrapping {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px;
+        }
+
+        button {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 12px;
+            background: #e89abb;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #d779a0;
+        }
+
+        .selected {
+            background: #9b6bb3;
+        }
+
+        #bouquet {
+            min-height: 50px;
+            margin: 20px;
+            padding: 15px;
+            background: #faf0f5;
+            border-radius: 15px;
+        }
+
+        #result {
+            font-size: 20px;
+            margin: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="game">
+
+    <h1>🌷 Bloom & Bouquet 🌷</h1>
+
+    <p>Money: $<span id="money">20</span></p>
+
+    <div class="customer">
+        <h2>💐 A Customer Has Arrived!</h2>
+
+        <p id="customerRequest">
+            Hi! I need a bouquet for my mom's birthday.
+            She loves soft, cheerful flowers.
+            Please include a daisy!
+        </p>
+    </div>
+
+    <h2>🌸 Choose Your Flowers</h2>
+
+    <div class="flowers">
+        <button onclick="addFlower('🌼 Daisy')">🌼 Daisy</button>
+        <button onclick="addFlower('🌹 Rose')">🌹 Rose</button>
+        <button onclick="addFlower('🌻 Sunflower')">🌻 Sunflower</button>
+        <button onclick="addFlower('💜 Lavender')">💜 Lavender</button>
+        <button onclick="addFlower('🌷 Tulip')">🌷 Tulip</button>
+    </div>
+
+    <h2>🎀 Choose Wrapping</h2>
+
+    <div class="wrapping">
+        <button onclick="chooseWrapping('🤍 White')">🤍 White</button>
+        <button onclick="chooseWrapping('💗 Pink')">💗 Pink</button>
+        <button onclick="chooseWrapping('💜 Purple')">💜 Purple</button>
+    </div>
+
+    <div id="bouquet">
+        <h3>Your Bouquet</h3>
+        <p id="flowersChosen">No flowers yet!</p>
+        <p id="wrappingChosen">No wrapping yet!</p>
+    </div>
+
+    <button onclick="deliverBouquet()">💐 Give Bouquet to Customer</button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+let bouquet = [];
+let wrapping = "";
+
+let money = 20;
+
+function addFlower(flower) {
+
+    bouquet.push(flower);
+
+    document.getElementById("flowersChosen").innerText =
+        bouquet.join(" ");
+
+}
+
+function chooseWrapping(choice) {
+
+    wrapping = choice;
+
+    document.getElementById("wrappingChosen").innerText =
+        "Wrapping: " + wrapping;
+
+}
+
+function deliverBouquet() {
+
+    if (bouquet.length === 0) {
+
+        document.getElementById("result").innerText =
+            "🌱 You need to add some flowers first!";
+
+        return;
+
+    }
+
+    let score = 0;
+
+    // Daisy requirement
+    if (bouquet.includes("🌼 Daisy")) {
+        score += 40;
+    }
+
+    // Soft flowers
+    if (
+        bouquet.includes("🌼 Daisy") ||
+        bouquet.includes("💜 Lavender")
+    ) {
+        score += 20;
+    }
+
+    // Cheerful flowers
+    if (
+        bouquet.includes("🌻 Sunflower") ||
+        bouquet.includes("🌼 Daisy")
+    ) {
+        score += 20;
+    }
+
+    // Wrapping bonus
+    if (wrapping !== "") {
+        score += 20;
+    }
+
+    money += Math.floor(score / 5);
+
+    document.getElementById("money").innerText = money;
+
+    document.getElementById("result").innerText =
+        "⭐ Customer Satisfaction: " + score +
+        "%! You earned $" + Math.floor(score / 5) + "!";
+
+    bouquet = [];
+    wrapping = "";
+
+    document.getElementById("flowersChosen").innerText =
+        "No flowers yet!";
+
+    document.getElementById("wrappingChosen").innerText =
+        "No wrapping yet!";
+}
+
+</script>
+
+</body>
+</html>
